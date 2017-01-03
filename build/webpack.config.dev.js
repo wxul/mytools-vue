@@ -1,4 +1,5 @@
 var webpack = require('webpack');
+var path = require('path');
 
 module.exports = {
     entry: {
@@ -7,8 +8,8 @@ module.exports = {
         ]
     },
     output: {
-        publicPath: '/dist',
-        path: '/dist',
+        publicPath: '/dist/',
+        path: path.resolve(__dirname, '../dist/'),
         filename: '[name].js',
         chunkFilename: '[name],[chunkhash].min.js'
     },

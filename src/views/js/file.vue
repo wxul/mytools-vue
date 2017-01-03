@@ -4,27 +4,17 @@
             <el-col :span="16" :offset="1">
                 <el-form :model="form" label-width="80px">
                     <el-form-item label="文件">
-                        <el-upload
-                            action="//jsonplaceholder.typicode.com/posts/"
+                        <my-upload
+                            :action='action'
                             type="drag"
-                            :multiple="true"
-                            :on-preview="handlePreview"
-                            :on-remove="handleRemove"
-                            :on-success="handleSuccess"
-                            :on-error="handleError"
-                            :default-file-list="fileList"
                             accept=".js"
+                            :onSuccess="success"
                             >
-                            <i class="el-icon-upload"></i>
-                            <div class="el-dragger__text">将文件拖到此处，或<em>点击上传</em></div>
-                            <div class="el-upload__tip" slot="tip">只能上传js文件</div>
-                        </el-upload>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button type="primary" @click="onSubmit">压缩!</el-button>
+                            <div class="el-upload__tip" slot="tips">只能上传js文件</div>
+                        </my-upload>
                     </el-form-item>
                     <el-form-item label="压缩后">
-                        <el-input type="textarea" v-model="form.min" :rows="4"></el-input>
+                        <a v-show="showdl" :href="dl.href" :download="dl.name">点击下载文件</a>
                     </el-form-item>
                 </el-form>
             </el-col>
@@ -36,28 +26,32 @@
 
 <script>
 import {target} from '../../config';
+import MyUpload from './uploadlist.vue'
     export default {
+        components:{
+            MyUpload
+        },
         data() {
             return {
-                form:{
-                    text:"",
-                    min:"",
-                    fileList:[]
+                fileList:[],
+                action:`${target}/js/file`,
+                form:{},
+                dl:{
+                    name:"result.js",
+                    href:""
                 }
             }
         },
+        computed:{
+            showdl(){
+                return !!this.dl.href;
+            }
+        },
         methods:{
-            onSubmit(){
-                //console.log(this.form.text);
-                /*this.$http.post(`${target}/js/txt`,{jstxt:this.form.text})
-                .then((d)=>{
-                    return d.json();
-                },(e)=>{
-                    console.error("error:"+e);
-                }).then(d=>{
-                    this.form.min=d.data;
-                })*/
-                //console.log(this.$http);
+            success(data){
+                var b = new Blob([data.data], { type: "application/octet-binary" });
+                var url = URL.createObjectURL(b);
+                this.dl.href=url;
             }
         }
     }
