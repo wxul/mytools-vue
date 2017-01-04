@@ -18,7 +18,7 @@ const system = (() => {
     }
 })();
 const DEBUG = process.env.NODE_ENV === "development";
-const target = DEBUG ? "http://127.0.0.1:3000" : "http://xxx.com"
+const target = DEBUG ? "http://127.0.0.1:3000" : "http://api.amayading.com"
 export {
     system,
     target,
