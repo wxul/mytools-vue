@@ -32,6 +32,15 @@ module.exports = {
         }, {
             test: /\.(eot|svg|ttf|woff|woff2)(\?\S*)?$/,
             loader: 'file-loader'
+        },{ 
+            test: require.resolve("../src/other/llqrcode.js"),  
+            loader: "exports?qrcode"
+        },{ 
+            test: require.resolve("../src/other/qrcanvas.js"),  
+            loader: "exports?createQRImage"
+        },{ 
+            test: require.resolve("../src/other/qrcode.js"),  
+            loader: "exports?QRCode&QRErrorCorrectLevel"
         }]
     },
     plugins: [
@@ -40,7 +49,8 @@ module.exports = {
                 NODE_ENV: '"development"'
             }
         }),
-        new webpack.HotModuleReplacementPlugin()
+        new webpack.HotModuleReplacementPlugin()/*,
+        new webpack.optimize.UglifyJsPlugin()*/ //开发就不用了...
     ],
     resolve: {
         extensions: ['', '.js', '.vue']

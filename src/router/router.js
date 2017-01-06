@@ -39,6 +39,22 @@ var router = new Router({
                 require(['../views/js/file.vue'], resolve)
             }
         }]
+    },{
+        path: '/qr',
+        component: (resolve) => {
+            require(['../views/qrcode/index.vue'], resolve)
+        },
+        children: [{
+            path: 'decode',
+            component: (resolve) => {
+                require(['../views/qrcode/decode.vue'], resolve)
+            }
+        },{
+            path: 'code',
+            component: (resolve) => {
+                require(['../views/qrcode/code.vue'], resolve)
+            }
+        }]
     }]
 });
 

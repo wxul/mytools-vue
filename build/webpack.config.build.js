@@ -32,6 +32,15 @@ module.exports = {
         }, {
             test: /\.(eot|svg|ttf|woff|woff2)(\?\S*)?$/,
             loader: 'file-loader'
+        },{ 
+            test: require.resolve("../src/other/llqrcode.js"),  
+            loader: "exports?qrcode"
+        },{ 
+            test: require.resolve("../src/other/qrcanvas.js"),  
+            loader: "exports?createQRImage"
+        },{ 
+            test: require.resolve("../src/other/qrcode.js"),  
+            loader: "exports?QRCode&QRErrorCorrectLevel"
         }]
     },
     plugins: [
@@ -39,7 +48,8 @@ module.exports = {
             'process.env': {
                 NODE_ENV: '"production"'
             }
-        })
+        }),
+        new webpack.optimize.UglifyJsPlugin()
     ],
     resolve: {
         extensions: ['', '.js', '.vue']

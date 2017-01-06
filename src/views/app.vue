@@ -12,6 +12,11 @@
                 <el-menu-item index="/js/txt">文本压缩</el-menu-item>
                 <el-menu-item index="/js/file">文件压缩</el-menu-item>
             </el-submenu>
+            <el-submenu index="/qr">
+                <template slot="title">二维码</template>
+                <el-menu-item index="/qr/code">生成</el-menu-item>
+                <el-menu-item index="/qr/decode">解码</el-menu-item>
+            </el-submenu>
         </el-menu>
         <div class="viewbox">
             <router-view></router-view>

@@ -1,12 +1,12 @@
 {
   "name": "mytools-vue",
-  "version": "0.0.1",
+  "version": "0.2.1",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack-dev-server --inline --port 3333 --config ./build/webpack.config.dev.js",
-    "build":"webpack --config ./build/webpack.config.build.js --progress --colors --watch -p"
+    "dev": "webpack-dev-server --inline --hot --port 3333 --config ./build/webpack.config.dev.js",
+    "build": "webpack --config ./build/webpack.config.build.js --progress --colors --watch -p"
   },
   "author": "albert",
   "license": "ISC",
@@ -15,6 +15,7 @@
     "babel-loader": "^6.2.10",
     "babel-preset-latest": "^6.16.0",
     "css-loader": "^0.26.1",
+    "exports-loader": "^0.6.3",
     "file-loader": "^0.9.0",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
