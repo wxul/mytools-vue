@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack-dev-server --inline --hot --port 3333 --config ./build/webpack.config.dev.js",
-    "build": "webpack --config ./build/webpack.config.build.js --progress --colors --watch -p"
+    "build": "rm ./dist/* && webpack --config ./build/webpack.config.build.js --progress --colors --watch -p"
   },
   "author": "albert",
   "license": "ISC",

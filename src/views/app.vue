@@ -43,4 +43,8 @@
     .viewbox{
         margin-top:40px;
     }
+    .container{
+        min-width: 780px;
+        overflow-x: hidden;
+    }
 </style>
