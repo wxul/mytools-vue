@@ -100,9 +100,81 @@
                     </el-tab-pane>
                     <el-tab-pane label="效果设置" name="other" class="tab-other">
                         <span slot="label"><i class="el-icon-picture"></i> 效果设置</span>
+                        
+                        <el-form ref="form" :model="other" label-width="80px">
+                            <el-form-item label="样式">
+                                <el-slider v-model="other.round" :min="-50" :max="50" @change="otherRoundChange"></el-slider>
+                            </el-form-item>
+                            <el-form-item label="颜色">
+                                前景色
+                                <color-picker :handleChange="onFGColorChange"></color-picker>
+                                &nbsp;&nbsp;
+                                背景色
+                                <color-picker :handleChange="onBGColorChange"></color-picker>
+                                &nbsp;&nbsp;
+                                外框定位点
+                                <color-picker :handleChange="onPtColorChange"></color-picker>
+                                &nbsp;&nbsp;
+                                内点定位点
+                                <color-picker :handleChange="onInPtColorChange"></color-picker>
+                            </el-form-item>
+                            <el-form-item label="渐变">
+                                渐变色
+                                <color-picker :handleChange="onGCColorChange"></color-picker>
+                                &nbsp;&nbsp;
+                                渐变方式
+                                <el-select style="width:100px;" size="small" v-model="other.gctype" placeholder="请选择" @change="onGCTypeChange">
+                                    <el-option
+                                    v-for="item in other.gctypes"
+                                    :label="item.label"
+                                    :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="嵌入图标">
+                                <el-select style="width:80px;" size="small" v-model="other.logotype" placeholder="请选择" @change="onLogoTypeChange">
+                                    <el-option
+                                    v-for="item in other.logotypes"
+                                    :label="item.label"
+                                    :value="item.value">
+                                    </el-option>
+                                </el-select>
+                                <input type="file" style="display:none;" ref="logo" accept="image/gif,image/jpg,image/png" @change="logoselect"/>
+                                <el-button  type="primary" size="small" @click="handleLogo">选择图片</el-button>
+                                <span> {{other.logo.logoimg && other.logo.logoimg.target.files[0].name}}</span>
+                            </el-form-item>
+                            <el-form-item label="其它设置">
+                                外边距
+                                <el-select style="width:75px;" size="small" v-model="other.margin" placeholder="请选择" @change="onMarginChange">
+                                    <el-option
+                                    v-for="item in other.margins"
+                                    :label="item.label"
+                                    :value="item.value">
+                                    </el-option>
+                                </el-select>
+                                &nbsp;
+                                纠错等级
+                                <el-select style="width:75px;" size="small" :disabled="other.levellock" v-model="other.level" placeholder="请选择" @change="onLevelChange">
+                                    <el-option
+                                    v-for="item in other.levels"
+                                    :label="item.label"
+                                    :value="item.value">
+                                    </el-option>
+                                </el-select>
+                                &nbsp;
+                                旋转
+                                <el-select style="width:75px;" size="small" v-model="other.rotate" placeholder="请选择" @change="onRotateChange">
+                                    <el-option
+                                    v-for="item in other.rotates"
+                                    :label="item.label"
+                                    :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-form>
                     </el-tab-pane>
                 </el-tabs>
-                <el-button type="primary" class="draw" @click="handleDraw">生成</el-button>
+                <el-button type="primary" class="draw" @click="handleDraw">{{activeName=='other'?"清除":"生成"}}</el-button>
             </el-col>
             <el-col :span="7" style="text-align:center;">
                 <div>
@@ -117,7 +189,10 @@
 </template>
 
 <script>
-    import createQRImage from '../../other/qrcanvas.js'
+    import createQRImage from '../../other/qrcanvas.js';
+    //import chrome from 'vue-color/src/components/Chrome.vue';
+    import ColorPicker from './colorpicker.vue';
+    //import {Chrome} from 'vue-color';
     export default {
         data() {
             return {
@@ -163,11 +238,103 @@
                 dl: {
                     base64: "",
                     name: "二维码.png"
+                },
+                other: {
+                    round: 0,
+                    fgcolor: "",
+                    bgcolor: "",
+                    ptcolor: "",
+                    inptcolor: "",
+                    gccolor: "#000",
+                    gctype: "circular",
+                    gctypes: [{
+                        label: "无",
+                        value: "0"
+                    }, {
+                        label: "反斜线",
+                        value: "backslash"
+                    }, {
+                        label: "斜线",
+                        value: "slash"
+                    }, {
+                        label: "圆形",
+                        value: "circular"
+                    }, {
+                        label: "水平",
+                        value: "horizontal"
+                    }, {
+                        label: "垂直",
+                        value: "vertical"
+                    }],
+                    margin: 10,
+                    margins: [{
+                        label: "0",
+                        value: 0
+                    }, {
+                        label: "10px",
+                        value: 10
+                    }, {
+                        label: "20px",
+                        value: 20
+                    }, {
+                        label: "25px",
+                        value: 25
+                    }],
+                    level: "L",
+                    levellock: false,
+                    levels: [{
+                        label: "最低",
+                        value: "L"
+                    }, {
+                        label: "低",
+                        value: "M"
+                    }, {
+                        label: "中",
+                        value: "Q"
+                    }, {
+                        label: "高",
+                        value: "H"
+                    }],
+                    rotate: "0",
+                    rotates: [{
+                        label: "0",
+                        value: "0"
+                    }, {
+                        label: "90°",
+                        value: "1"
+                    }, {
+                        label: "180°",
+                        value: "2"
+                    }, {
+                        label: "270°",
+                        value: "3"
+                    }],
+                    logo: {
+                        logoimg: "",
+                        logotype: ""
+                    },
+                    logotype: "default",
+                    logotypes: [{
+                        label: "圆角",
+                        value: "icon"
+                    }, {
+                        label: "白底",
+                        value: "border"
+                    }, {
+                        label: "描边",
+                        value: "stroke"
+                    }, {
+                        label: "原图",
+                        value: "default"
+                    }]
                 }
             }
         },
-
+        components: {
+            ColorPicker
+        },
         mounted() {
+            console.log(chrome);
             this.canvas = new createQRImage("canvas");
             this.canvas.changeText("https://albert.amayading.com");
         },
@@ -182,7 +349,71 @@
                 return `smsto:${this.SMS.Tel}:${this.SMS.NOTE}`
             }
         },
-        methods: {
+        watch: {
+            margin(cur, old) {
+                console.log(cur, old)
+                this.canvas.changeMargin(cur);
+
+            }
+        },
+        methods: { //changeLevel
+            setH() {
+                this.other.level = "H";
+                this.other.levellock = true;
+            },
+            onLogoTypeChange(e) {
+                this.canvas.changeLogoimg(this.other.logo.logoimg, e);
+                this.setH();
+            },
+            logoselect(e) {
+                this.other.logo.logoimg = e;
+                this.canvas.changeLogoimg(e, this.other.logotype);
+                this.setH();
+            },
+            handleLogo() {
+                this.$refs.logo.click();
+            },
+            onWidthChange(e) {
+                this.canvas.changeWidth(e);
+            },
+            onRotateChange(e) {
+                this.canvas.changeRotate(e);
+            },
+            onLevelChange(e) {
+                this.canvas.changeLevel(e);
+            },
+            onMarginChange(e) {
+                console.log(this.other.margin);
+                this.canvas.changeMargin(e);
+            },
+            onGCTypeChange(e) {
+                this.canvas.changeGradientWay(this.other.gctype, this.other.gccolor);
+            },
+            onGCColorChange(e) {
+                this.other.gccolor = e.hex;
+                this.canvas.changeGcColor(this.other.gctype, e.hex);
+            },
+            onInPtColorChange(e) {
+                this.other.inptcolor = e.hex;
+                this.canvas.changeInPtColor(e.hex);
+            },
+            onPtColorChange(e) {
+                this.other.ptcolor = e.hex;
+                this.canvas.changePtColor(e.hex);
+            },
+            onBGColorChange(e) {
+                this.other.bgcolor = e.hex;
+                this.canvas.changeBgColor(e.hex);
+            },
+            onFGColorChange(e) {
+                //console.log(e);
+                this.other.fgcolor = e.hex;
+                //this.other.fg.show = false;
+                this.canvas.changeFgColor(e.hex);
+            },
+            otherRoundChange(e) {
+                this.canvas.changeRound(e < 0, Math.abs(e) / 100);
+            },
             wifichange(e) {
                 if (e == "nopass") {
                     this.WIFI.P = "";
@@ -220,13 +451,33 @@
                         this.canvas.changeText(this.wifi);
                         break;
                     case "sms":
-                        console.log(this.sms)
                         this.canvas.changeText(this.sms);
+                        break;
+                    case "other": //清除设置
+                        this.canvas.resetAll();
+                        this.resetAll();
                         break;
                     default:
                         break;
                 }
 
+            },
+            resetAll() {
+                this.other.round = 0;
+                this.other.fgcolor = "";
+                this.other.bgcolor = "";
+                this.other.ptcolor = "";
+                this.other.inptcolor = "";
+                this.other.gccolor = "#000";
+                this.other.gctype = "circular";
+                this.other.margin = 10;
+                this.other.level = "L";
+                this.other.levellock = false;
+                this.other.rotate = "0";
+                this.other.logo = {
+                    logoimg: "",
+                    logotype: ""
+                }
             },
             handleClick() {
                 //console.log(createQRImage);
@@ -257,13 +508,19 @@
         width: 440px;
     }
     
+    .tab-other .el-form {
+        width: 100%;
+    }
+    
     .tab-card .el-form .el-form-item,
     .tab-wifi .el-form .el-form-item,
-    .tab-sms .el-form .el-form-item {
+    .tab-sms .el-form .el-form-item,
+    .tab-other .el-form .el-form-item {
         margin-bottom: 10px;
     }
     
     #canvas {
         max-width: 100%;
+        box-shadow: 0 0 4px #333;
     }
 </style>

@@ -44,7 +44,8 @@
         margin-top:40px;
     }
     .container{
-        min-width: 780px;
+        min-width: 900px;
         overflow-x: hidden;
+        min-height: 100%;
     }
 </style>

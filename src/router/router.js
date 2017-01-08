@@ -10,7 +10,7 @@ var router = new Router({
     routes: [{
         path: '/',
         component: (resolve) => {
-            require(['../views/other/404.vue'], resolve)
+            require(['../views/index.vue'], resolve)
         }
     }, {
         path: '/hash',

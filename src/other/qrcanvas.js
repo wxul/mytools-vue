@@ -63,7 +63,7 @@ function createQRImage(P, Q, X) {
         return b
     }
     var l = {
-            text: "http://m.liantu.com/",
+            text: "",
             level: "L",
             width: 300,
             margin: 10,
@@ -757,6 +757,7 @@ function createQRImage(P, Q, X) {
                 f.stroke())
         },
         N = function(f, b, c) {
+            var grd="";
             switch (grd = "",
                 a.gradientWay) {
                 case "backslash":
